@@ -1,12 +1,12 @@
-FROM ubuntu:14.04
-MAINTAINER korea lee <lee@korea.com>
-RUN apt-get update
-RUN apt-get install -y nginx
-RUN echo "\ndaemon off;" >> /etc/nginx/nginx.conf
-RUN chown -R www-data:www-data /var/lib/nginx
+# Step:1 Ubuntu (base image)
+FROM ubuntu:latest
 
-VOLUME ["/data", "/etc/nginx/site-enabled", "/var/log/nginx"]
-WORKDIR /etc/nginx
-CMD ["nginx"]
-EXPOSE 80
-EXPOSE 443
+# Step:2 Nginx install
+RUN apt-get update && apt-get install -y -q nginx
+
+# Step:3 file copy
+COPY ./index.html /usr/share/nginx/html/
+
+# Step:4 Nginx start
+CMD ["nginx", "-g", "daemon off;"]
+
